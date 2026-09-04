@@ -67,82 +67,90 @@ function DemoBanner({ scene, onScene }: { scene: DemoScene; onScene: (s: DemoSce
 function MatureHeader({
   showMoreOpen,
   onToggleMore,
+  mode = 'full',
 }: {
   showMoreOpen?: boolean;
   onToggleMore?: () => void;
+  mode?: 'full' | 'minimal';
 }) {
   return (
     <header className="border-b border-stone-200 bg-white">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6">
-        <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-teal-700 text-lg font-bold text-white">₸</div>
-          <div>
-            <h1 className="text-lg font-semibold tracking-tight text-stone-900">Smart Payroll РК</h1>
-            <p className="text-sm text-stone-500">Зарплатная ведомость</p>
+      <div className="mx-auto max-w-6xl px-4 py-4 sm:px-6">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-teal-700 text-lg font-bold text-white">₸</div>
+            <div>
+              <h1 className="text-lg font-semibold tracking-tight text-stone-900">Smart Payroll РК</h1>
+              <p className="text-sm text-stone-500">Зарплатная ведомость</p>
+            </div>
           </div>
-        </div>
 
-        <div className="flex flex-wrap items-center gap-3">
-          <label className="flex min-h-11 items-center gap-2 rounded-xl border border-stone-200 bg-stone-50 px-3 text-sm text-stone-700">
-            <Calendar className="h-4 w-4 text-stone-500" />
-            <select className="bg-transparent py-2 font-medium focus:outline-none" defaultValue="2026-03" aria-label="Расчётный период">
-              <option value="2026-03">Март 2026</option>
-              <option value="2026-02">Февраль 2026</option>
-            </select>
-          </label>
-
-          <div className="flex min-h-11 items-center gap-2 rounded-xl border border-stone-200 bg-stone-50 px-3 text-sm">
-            <span className="text-stone-500">Ведомость:</span>
-            <span className="font-medium text-stone-800">Черновик</span>
-            <button type="button" className="ml-1 inline-flex min-h-9 items-center gap-1.5 rounded-lg bg-teal-700 px-3 py-1.5 font-medium text-white hover:bg-teal-800">
-              Отправить на проверку
-              <ArrowRight className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
-
-        <div className="relative flex items-center gap-2">
-          <button type="button" className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-teal-700 px-4 text-sm font-semibold text-white hover:bg-teal-800">
-            <Plus className="h-4 w-4" />
-            Добавить сотрудника
-          </button>
-          <button
-            type="button"
-            onClick={onToggleMore}
-            className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-stone-200 bg-white px-3 text-sm font-medium text-stone-700 hover:bg-stone-50"
-            aria-expanded={showMoreOpen}
-          >
-            <MoreHorizontal className="h-4 w-4" />
-            Ещё
-          </button>
-
-          {showMoreOpen && (
-            <div className="absolute right-0 top-full z-20 mt-2 w-72 rounded-2xl border border-stone-200 bg-white p-2 shadow-lg">
-              <p className="px-3 py-2 text-xs font-semibold uppercase tracking-wide text-stone-400">Действия</p>
-              {[
-                { icon: FileText, label: 'Расчётные листки' },
-                { icon: Download, label: 'Скачать таблицу (Excel)' },
-                { icon: BookOpen, label: 'Справка' },
-                { icon: Settings2, label: 'Настройки зарплаты' },
-              ].map(({ icon: Icon, label }) => (
-                <button
-                  key={label}
-                  type="button"
-                  className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm text-stone-800 hover:bg-stone-50"
-                >
-                  <Icon className="h-4 w-4 text-stone-500" />
-                  {label}
-                </button>
-              ))}
-              <div className="my-1 border-t border-stone-100" />
-              <p className="px-3 py-2 text-xs font-semibold uppercase tracking-wide text-stone-400">Для администратора</p>
-              <button type="button" className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm text-stone-600 hover:bg-stone-50">
-                <Database className="h-4 w-4 text-stone-400" />
-                Просмотр базы данных
+          {mode === 'full' && (
+            <div className="relative flex flex-wrap items-center gap-2">
+              <button type="button" className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-teal-700 px-4 text-sm font-semibold text-white hover:bg-teal-800">
+                <Plus className="h-4 w-4" />
+                Добавить сотрудника
               </button>
+              <button
+                type="button"
+                onClick={onToggleMore}
+                className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-stone-200 bg-white px-3 text-sm font-medium text-stone-700 hover:bg-stone-50"
+                aria-expanded={showMoreOpen}
+              >
+                <MoreHorizontal className="h-4 w-4" />
+                Ещё
+              </button>
+
+              {showMoreOpen && (
+                <div className="absolute right-0 top-full z-20 mt-2 w-72 rounded-2xl border border-stone-200 bg-white p-2 shadow-lg">
+                  <p className="px-3 py-2 text-xs font-semibold uppercase tracking-wide text-stone-400">Действия</p>
+                  {[
+                    { icon: FileText, label: 'Расчётные листки' },
+                    { icon: Download, label: 'Скачать таблицу (Excel)' },
+                    { icon: BookOpen, label: 'Справка' },
+                    { icon: Settings2, label: 'Настройки зарплаты' },
+                  ].map(({ icon: Icon, label }) => (
+                    <button
+                      key={label}
+                      type="button"
+                      className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm text-stone-800 hover:bg-stone-50"
+                    >
+                      <Icon className="h-4 w-4 text-stone-500" />
+                      {label}
+                    </button>
+                  ))}
+                  <div className="my-1 border-t border-stone-100" />
+                  <p className="px-3 py-2 text-xs font-semibold uppercase tracking-wide text-stone-400">Для администратора</p>
+                  <button type="button" className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm text-stone-600 hover:bg-stone-50">
+                    <Database className="h-4 w-4 text-stone-400" />
+                    Просмотр базы данных
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>
+
+        {mode === 'full' && (
+          <div className="mt-3 flex flex-wrap items-center gap-3 border-t border-stone-100 pt-3">
+            <label className="flex min-h-11 items-center gap-2 rounded-xl border border-stone-200 bg-stone-50 px-3 text-sm text-stone-700">
+              <Calendar className="h-4 w-4 text-stone-500" />
+              <select className="bg-transparent py-2 font-medium focus:outline-none" defaultValue="2026-03" aria-label="Расчётный период">
+                <option value="2026-03">Март 2026</option>
+                <option value="2026-02">Февраль 2026</option>
+              </select>
+            </label>
+
+            <div className="flex min-h-11 flex-wrap items-center gap-2 rounded-xl border border-stone-200 bg-stone-50 px-3 text-sm">
+              <span className="text-stone-500">Ведомость:</span>
+              <span className="font-medium text-stone-800">Черновик</span>
+              <button type="button" className="inline-flex min-h-9 items-center gap-1.5 rounded-lg bg-teal-700 px-3 py-1.5 font-medium text-white hover:bg-teal-800">
+                Отправить на проверку
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );
@@ -353,7 +361,7 @@ function OnboardingScene() {
 
   return (
     <div className="min-h-screen bg-[#f7f6f3] text-stone-900">
-      <MatureHeader />
+      <MatureHeader mode="minimal" />
       <main className="mx-auto max-w-2xl px-4 py-12 sm:px-6">
         <div className="rounded-3xl border border-stone-200 bg-white p-8 shadow-sm">
           <p className="text-sm font-medium text-teal-800">Первый запуск</p>
