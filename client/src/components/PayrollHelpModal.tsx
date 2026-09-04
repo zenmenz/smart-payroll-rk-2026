@@ -1,0 +1,17 @@
+import React from 'react';
+import { BookOpen, ShieldCheck, Table2, X, Zap } from 'lucide-react';
+import { trpc } from '@/lib/trpc';
+
+interface PayrollHelpModalProps { isOpen: boolean; onClose: () => void; }
+
+export function PayrollHelpModal({ isOpen, onClose }: PayrollHelpModalProps) {
+  const specificationQuery = trpc.payroll.specification.useQuery(undefined, { enabled: isOpen });
+  if (!isOpen) return null;
+  const specification = specificationQuery.data;
+  return <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-[#09090b]/80 backdrop-blur-md overflow-y-auto animate-in fade-in duration-200">
+    <div className="relative w-full max-w-5xl bg-[#18181b] border border-zinc-800 rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col">
+      <div className="px-6 py-5 border-b border-zinc-800 bg-[#121215] flex items-center justify-between"><div className="flex items-center gap-3"><div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center border border-emerald-500/30"><BookOpen className="w-5 h-5" /></div><div><h3 className="text-base font-bold text-[#fafafa]">Справка Smart Payroll РК</h3><p className="text-xs text-zinc-400">Спецификация ролей, таблиц, кнопок и серверных функций</p></div></div><button onClick={onClose} className="p-2 rounded-xl bg-[#18181b] hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-colors border border-zinc-800"><X className="w-5 h-5" /></button></div>
+      <div className="p-6 overflow-y-auto space-y-6 text-xs bg-[#18181b]">{specificationQuery.isLoading ? <p className="text-zinc-400">Загружается спецификация…</p> : <><p className="text-zinc-400">{specification?.scope}</p><section><h4 className="text-sm font-bold text-zinc-100 flex items-center gap-2 mb-3"><ShieldCheck className="w-4 h-4 text-emerald-400" />Роли и доступ</h4><div className="grid grid-cols-1 md:grid-cols-2 gap-3">{specification?.roles.map((role) => <div key={role.id} className="bg-[#121215] border border-zinc-800 rounded-2xl p-4"><p className="font-bold text-zinc-100">{role.title}</p><p className="text-zinc-400 mt-1">{role.access}</p></div>)}</div></section><section><h4 className="text-sm font-bold text-zinc-100 flex items-center gap-2 mb-3"><Table2 className="w-4 h-4 text-blue-400" />Таблицы</h4><div className="overflow-x-auto border border-zinc-800 rounded-2xl"><table className="w-full text-left"><thead className="bg-[#121215] text-zinc-400"><tr><th className="px-4 py-3">Таблица</th><th className="px-4 py-3">Назначение</th></tr></thead><tbody>{specification?.tables.map((table) => <tr key={table.id} className="border-t border-zinc-800"><td className="px-4 py-3 font-mono text-emerald-300">{table.title}</td><td className="px-4 py-3 text-zinc-400">{table.purpose}</td></tr>)}</tbody></table></div></section><section><h4 className="text-sm font-bold text-zinc-100 flex items-center gap-2 mb-3"><Zap className="w-4 h-4 text-amber-400" />Действия и кнопки</h4><div className="space-y-2">{specification?.actions.map((action) => <div key={action.id} className="bg-[#121215] border border-zinc-800 rounded-xl px-4 py-3 flex flex-wrap items-center justify-between gap-2"><div><p className="font-semibold text-zinc-100">{action.title}</p><p className="font-mono text-[10px] text-zinc-500">{action.id}</p></div><span className="px-2 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">{action.role}</span></div>)}</div></section></>}</div>
+    </div>
+  </div>;
+}

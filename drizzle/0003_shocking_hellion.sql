@@ -1,0 +1,1 @@
+ALTER TABLE `taxProfiles` RENAME COLUMN `lowIncomeAnnualizedMciLimit` TO `lowIncomeMonthlyMciLimit`;
