@@ -5,8 +5,14 @@ import { httpBatchLink, TRPCClientError } from "@trpc/client";
 import { createRoot } from "react-dom/client";
 import superjson from "superjson";
 import App from "./App";
+import UxDemoPreview from "./pages/UxDemoPreview";
 import { startLogin } from "./const";
 import "./index.css";
+
+const isUxDemoRoute =
+  typeof window !== "undefined" &&
+  (window.location.pathname === "/demo/ux" ||
+    window.location.pathname.startsWith("/demo/ux/"));
 
 const queryClient = new QueryClient();
 
@@ -73,9 +79,13 @@ const trpcClient = trpc.createClient({
 });
 
 createRoot(document.getElementById("root")!).render(
-  <trpc.Provider client={trpcClient} queryClient={queryClient}>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
-  </trpc.Provider>
+  isUxDemoRoute ? (
+    <UxDemoPreview />
+  ) : (
+    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </trpc.Provider>
+  )
 );
